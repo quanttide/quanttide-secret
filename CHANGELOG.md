@@ -8,6 +8,12 @@
 
 ---
 
+## [Unreleased]
+
+### 新增
+
+- 注册子模块：`apps/qtcloud-secret`、`packages/quanttide-secret-toolkit`、`examples/default`
+
 ## [0.1.0] - 2026-08-16
 
 ### 新增

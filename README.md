@@ -13,6 +13,14 @@
 - 敏感信息：敏感数据的分类、脱敏、访问控制与审计
 - 工具与规范：Vault 等密钥管理服务的接入规范
 
+## 子模块
+
+| 路径 | 说明 |
+|------|------|
+| `apps/qtcloud-secret` | QtCloud 密码管理应用 (git submodule) |
+| `packages/quanttide-secret-toolkit` | 密码管理工具集 (git submodule) |
+| `examples/default` | 密码管理实验室 (git submodule → quanttide-laboratory-of-secret-management) |
+
 ## 许可
 
 [CC BY 4.0](LICENSE)

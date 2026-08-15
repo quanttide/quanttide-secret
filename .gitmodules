@@ -1,0 +1,9 @@
+[submodule "apps/qtcloud-secret"]
+	path = apps/qtcloud-secret
+	url = https://github.com/quanttide/qtcloud-secret.git
+[submodule "packages/quanttide-secret-toolkit"]
+	path = packages/quanttide-secret-toolkit
+	url = https://github.com/quanttide/quanttide-secret-toolkit.git
+[submodule "examples/default"]
+	path = examples/default
+	url = https://github.com/quanttide/quanttide-laboratory-of-secret-management.git
