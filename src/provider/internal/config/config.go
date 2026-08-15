@@ -39,10 +39,12 @@ func Load() (*Config, error) {
 		return nil, fmt.Errorf("环境变量 OSS_ENDPOINT 未设置")
 	}
 
-	// JWT 密钥与 qtcloud-auth 共享（见 qtcloud-auth 的 JWT_SECRET 注入方式）
+	// JWT 密钥与 qtcloud-auth 共享：auth 未配置环境变量时用默认值 quanttide-auth-secret
+	// （见 qtcloud-auth cmd/server/main.go 的 getEnv fallback）；此处保持一致。
+	// 生产环境务必通过 org secret JWT_SECRET 注入，避免使用默认值。
 	secret := os.Getenv("JWT_SECRET")
 	if secret == "" {
-		return nil, fmt.Errorf("环境变量 JWT_SECRET 未设置")
+		secret = "quanttide-auth-secret"
 	}
 	cfg.JWTSecret = []byte(secret)
 
