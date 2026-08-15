@@ -1,25 +1,33 @@
 # quanttide-secret
 
-量潮密码管理
+量潮机密管理
 
 ## 概述
 
-量潮密码管理（quanttide-secret）是量潮知识管理体系中的**密码管理**领域，涵盖凭证、密钥与敏感信息的全生命周期管理。
+量潮机密管理（quanttide-secret）是量潮知识管理体系中的**机密管理**领域，涵盖密码、证件、密钥与敏感信息等所有需要同一套安全架构处理的机密对象的全生命周期管理。
+
+设计原则：**同一套安全架构，多种数据模型**——所有机密对象共用零知识加密、密文信封、脱敏、访问控制与审计机制；对象形态不同则数据模型不同，文本型（密码、密钥、凭证）与文件型（公司证件、身份证扫描件等）分开建模，互不混用。
 
 ## 领域边界
 
-- 凭证管理：口令、API Key、Token 等凭证的登记、轮换与回收
-- 密钥管理：签名密钥、加密密钥、应用密钥的生成、存储与分发
-- 敏感信息：敏感数据的分类、脱敏、访问控制与审计
-- 工具与规范：Vault 等密钥管理服务的接入规范
+| 对象类型 | 示例 | 数据模型 |
+|----------|------|----------|
+| 凭证 | 口令、API Key、Token | 文本信封模型（当前实现） |
+| 密钥 | 签名密钥、加密密钥、应用密钥 | 文本信封模型（当前实现） |
+| 证件 | 公司证件、法人身份证、资质证书 | 文件模型（规划中） |
+| 敏感信息 | 证件号、账号等敏感数据 | 字段模型（规划中） |
+
+- **统一安全架构**：所有机密对象共用零知识加密、密文信封、脱敏、访问控制与审计
+- **差异化数据模型**：文本型与文件型对象分开建模，按对象形态演进（当前仅文本型落地）
+- **工具与规范**：Vault 等密钥管理服务的接入规范
 
 ## 子模块
 
 | 路径 | 说明 |
 |------|------|
-| `apps/qtcloud-secret` | QtCloud 密码管理应用 (git submodule) |
-| `packages/quanttide-secret-toolkit` | 密码管理工具集 (git submodule) |
-| `examples/default` | 密码管理实验室 (git submodule → quanttide-laboratory-of-secret-management) |
+| `apps/qtcloud-secret` | QtCloud 机密管理应用 (git submodule) |
+| `packages/quanttide-secret-toolkit` | 机密管理工具集 (git submodule) |
+| `examples/default` | 机密管理实验室 (git submodule → quanttide-laboratory-of-secret-management) |
 
 ## 许可
 

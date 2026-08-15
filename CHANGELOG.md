@@ -10,6 +10,10 @@
 
 ## [Unreleased]
 
+### 变更
+
+- 领域更名：密码管理 → 机密管理；范围扩大为密码、证件等所有需要同一套安全架构处理的对象（不同对象形态使用不同数据模型）
+
 ### 新增
 
 - 注册子模块：`apps/qtcloud-secret`、`packages/quanttide-secret-toolkit`、`examples/default`
