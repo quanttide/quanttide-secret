@@ -1,0 +1,10 @@
+# 构建产物与本地配置
+/server
+*.test
+coverage.out
+
+# 本地模块缓存（CI/构建机专用）
+.gocache/
+
+# 测试 JWT 密钥对（私钥绝不可入库；公钥值用于 GitHub secret JWT_PUBLIC_KEY）
+.jwt-test/
