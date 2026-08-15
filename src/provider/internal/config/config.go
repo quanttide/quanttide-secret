@@ -2,24 +2,23 @@
 //
 // 环境变量约定（与 manifests/terraform/fc.tf 一致）：
 //
-//	OSS_BUCKET     密文数据桶名
-//	OSS_ENDPOINT   OSS endpoint（如 https://oss-cn-hangzhou.aliyuncs.com）
-//	JWT_PUBLIC_KEY 外部子系统 JWT 验签公钥（base64 编码 PEM，RS256/ES256）
-//	PORT           监听端口（默认 8080，FC custom-container 约定）
+//	OSS_BUCKET   密文数据桶名
+//	OSS_ENDPOINT OSS endpoint（如 https://oss-cn-hangzhou.aliyuncs.com）
+//	JWT_SECRET   与 qtcloud-auth 共享的 JWT HS256 签名密钥（org secret）
+//	PORT         监听端口（默认 8080，FC custom-container 约定）
 package config
 
 import (
-	"encoding/base64"
 	"fmt"
 	"os"
 )
 
 // Config 服务端运行配置。
 type Config struct {
-	OSSBucket    string
-	OSSEndpoint  string
-	JWTPublicKey []byte // 已解码的 PEM 公钥
-	Port         string
+	OSSBucket   string
+	OSSEndpoint string
+	JWTSecret   []byte // JWT HS256 签名密钥（与 qtcloud-auth 共享）
+	Port        string
 }
 
 // Load 从环境变量加载配置并校验必填项。
@@ -40,16 +39,12 @@ func Load() (*Config, error) {
 		return nil, fmt.Errorf("环境变量 OSS_ENDPOINT 未设置")
 	}
 
-	// JWT 公钥以 base64(PEM) 注入（见 manifests/terraform/fc.tf 与 README 安全说明）
-	encoded := os.Getenv("JWT_PUBLIC_KEY")
-	if encoded == "" {
-		return nil, fmt.Errorf("环境变量 JWT_PUBLIC_KEY 未设置")
+	// JWT 密钥与 qtcloud-auth 共享（见 qtcloud-auth 的 JWT_SECRET 注入方式）
+	secret := os.Getenv("JWT_SECRET")
+	if secret == "" {
+		return nil, fmt.Errorf("环境变量 JWT_SECRET 未设置")
 	}
-	pem, err := base64.StdEncoding.DecodeString(encoded)
-	if err != nil {
-		return nil, fmt.Errorf("JWT_PUBLIC_KEY 不是合法 base64: %w", err)
-	}
-	cfg.JWTPublicKey = pem
+	cfg.JWTSecret = []byte(secret)
 
 	return cfg, nil
 }

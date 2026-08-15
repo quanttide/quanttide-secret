@@ -13,7 +13,7 @@
 # 所需 GitHub secrets（org 级）：
 #   - ALIYUN_ACCESS_KEY_ID / ALIYUN_ACCESS_KEY_SECRET：RAM 用户 AccessKey（terraform 用，PowerUserAccess）
 #   - ALIYUN_ACR_USERNAME / ALIYUN_ACR_PASSWORD / ALIYUN_ACR_REGISTRY：ACR 固定凭证（docker login；REGISTRY 为本实例公网地址 crpi-xxx.personal.cr.aliyuncs.com）
-#   - JWT_PUBLIC_KEY：外部子系统 JWT 验签公钥（base64 编码 PEM，注入 TF_VAR_jwt_public_key）
+#   - JWT_SECRET：JWT HS256 签名密钥（与 qtcloud-auth 共享，注入 TF_VAR_jwt_secret；对齐 qtcloud-auth 的注入方式）
 #   - DOCKERHUB_USERNAME / DOCKERHUB_PASSWORD：Docker Hub 凭证（双通道之一）
 #
 # 前置条件：
@@ -105,7 +105,7 @@ jobs:
     env:
       ALICLOUD_ACCESS_KEY: ${{ secrets.ALIYUN_ACCESS_KEY_ID }}
       ALICLOUD_SECRET_KEY: ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}
-      TF_VAR_jwt_public_key: ${{ secrets.JWT_PUBLIC_KEY }}
+      TF_VAR_jwt_secret: ${{ secrets.JWT_SECRET }}
 
     steps:
       - name: Checkout

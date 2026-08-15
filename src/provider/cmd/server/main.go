@@ -21,7 +21,7 @@ func main() {
 		log.Fatalf("加载配置失败: %v", err)
 	}
 
-	verifier, err := auth.NewJWTVerifier(cfg.JWTPublicKey)
+	verifier, err := auth.NewJWTVerifier(cfg.JWTSecret)
 	if err != nil {
 		log.Fatalf("初始化 JWT 验签失败: %v", err)
 	}

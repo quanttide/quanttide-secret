@@ -31,15 +31,15 @@
 用户在另一个子系统，本系统**不存用户、不建会话**：
 
 ```
-① 外部子系统：签发 JWT（RS256/ES256，含 iss/aud/exp/scope）
+① 外部子系统（qtcloud-auth）：签发 JWT（HS256，JWT_SECRET 签名，含 iss/aud/exp/scope）
 ② 客户端：请求头 Authorization: Bearer <JWT>
-③ 应用服务：JWKS 公钥验签 → 校验 exp/aud/iss → 放行
+③ 应用服务：JWT_SECRET 验签（HS256）→ 校验 exp → 放行
 ```
 
 | 项 | 设计 |
 |----|------|
-| 签名算法 | RS256 / ES256，由外部子系统私钥签名 |
-| 公钥获取 | 应用服务缓存外部子系统 JWKS，定期刷新 |
+| 签名算法 | HS256（HMAC-SHA256），与 qtcloud-auth 共享 `JWT_SECRET`（org secret，注入方式对齐 qtcloud-auth） |
+| 密钥共享 | 本服务与 qtcloud-auth 同属量潮体系、互相信任；对称密钥下验签方亦能签发（体系内可接受，服务端本就不接触用户明文） |
 | 防重放 | 短过期时间 + 时间窗口校验（单团队场景足够） |
 | 授权规则 | 当前阶段：验签通过即可读写（单团队）；JWT 预留 `scope` 字段，将来细粒度权限无需改协议 |
 | 登出/吊销 | 依赖 token 短过期自然失效；必要时通过外部子系统黑名单接口，当前阶段不做 |

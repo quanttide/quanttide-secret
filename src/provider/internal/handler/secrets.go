@@ -38,19 +38,22 @@ func New(verifier *auth.Verifier, store storage.Store) *Handler {
 	return &Handler{verifier: verifier, store: store}
 }
 
-// Routes 注册路由（Go 1.22+ 方法路由），全部经 JWT 验签中间件。
+// Routes 注册路由（Go 1.22+ 方法路由）；secrets 端点经 JWT 验签中间件，/health 免鉴权（探活用）。
 func (h *Handler) Routes() http.Handler {
 	mux := http.NewServeMux()
-	mux.HandleFunc("GET /secrets", h.list)
-	mux.HandleFunc("POST /secrets", h.create)
-	mux.HandleFunc("GET /export", h.export)
-	mux.HandleFunc("GET /secrets/{id}", h.get)
-	mux.HandleFunc("PUT /secrets/{id}", h.update)
-	mux.HandleFunc("DELETE /secrets/{id}", h.delete)
 	mux.HandleFunc("GET /health", func(w http.ResponseWriter, _ *http.Request) {
 		w.WriteHeader(http.StatusOK)
 	})
-	return h.verifier.Middleware(mux)
+
+	secured := http.NewServeMux()
+	secured.HandleFunc("GET /secrets", h.list)
+	secured.HandleFunc("POST /secrets", h.create)
+	secured.HandleFunc("GET /export", h.export)
+	secured.HandleFunc("GET /secrets/{id}", h.get)
+	secured.HandleFunc("PUT /secrets/{id}", h.update)
+	secured.HandleFunc("DELETE /secrets/{id}", h.delete)
+	mux.Handle("/", h.verifier.Middleware(secured))
+	return mux
 }
 
 // list GET /secrets：返回对象清单（id/updatedAt），客户端全量同步。

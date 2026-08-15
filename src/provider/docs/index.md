@@ -31,12 +31,13 @@
 ## 3. 认证设计
 
 ```
-外部子系统 ──签发 JWT (RS256/ES256)──> 客户端
+外部子系统（qtcloud-auth）──签发 JWT (HS256, JWT_SECRET)──> 客户端
 客户端 ──Authorization: Bearer <JWT>──> 本服务
-本服务：公钥验签（JWKS/静态公钥）→ 校验 exp/aud/iss → 放行
+本服务：JWT_SECRET 验签（HS256）→ 校验 exp → 放行
 ```
 
-- 公钥经环境变量 `JWT_PUBLIC_KEY`（base64 PEM）注入，支持 RSA 与 ECDSA（internal/auth/jwt.go）
+- 密钥经环境变量 `JWT_SECRET` 注入，与 qtcloud-auth **共享同一 org secret**（注入方式对齐 qtcloud-auth：workflow `TF_VAR_jwt_secret` ← `secrets.JWT_SECRET`）
+- HS256 为对称签名：验签方亦能签发——本服务与 qtcloud-auth 同属量潮体系、互相信任（服务端不接触用户明文，见 security.md 零知识边界）
 - 每请求无状态验签，不建 session；短过期 + 时间窗口防重放
 - 授权规则：当前阶段验签通过即可读写（单团队）；JWT `scope` 字段预留团队版细粒度权限
 
@@ -109,7 +110,7 @@ oss://qtcloud-secret-data/          # 桶：版本控制 + SSE-OSS + 生命周�
 | 机制 | 实现 |
 |------|------|
 | 传输加密 | 全链路 TLS（FC 触发器 + 网关） |
-| 令牌验签 | JWT RS256/ES256，公钥验签，无状态 |
+| 令牌验签 | JWT HS256，与 qtcloud-auth 共享 JWT_SECRET，无状态 |
 | OSS 访问 | STS 最小权限角色，客户端永不直连 |
 | 零知识 | 服务端无密钥可接触明文；泄露兜底见 security.md 第 6 章 |
 | 审计 | 标准日志输出（团队版/合规要求时落独立审计存储） |

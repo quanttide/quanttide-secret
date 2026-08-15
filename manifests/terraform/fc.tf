@@ -79,13 +79,13 @@ resource "alicloud_fcv3_function" "this" {
     port  = 8080
   }
 
-  # 运行时约定（见 docs/dev-guide/transfer.md）：
-  #   OSS_BUCKET / OSS_ENDPOINT：数据桶访问；JWT_PUBLIC_KEY：外部子系统 JWT 验签公钥
-  # 注意：公钥会以明文落入 tfstate，属非敏感公开材料（仅用于验签）；规划迁移配置中心
+  # 运行时约定（见 src/provider/docs/index.md）：
+  #   OSS_BUCKET / OSS_ENDPOINT：数据桶访问；JWT_SECRET：与 qtcloud-auth 共享的 JWT HS256 签名密钥
+  # 注意：密钥会以明文落入 tfstate（与 qtcloud-auth 相同的已知问题）；规划迁移 Vault/配置中心
   environment_variables = {
-    OSS_BUCKET     = alicloud_oss_bucket.secrets.bucket
-    OSS_ENDPOINT   = local.oss_endpoint
-    JWT_PUBLIC_KEY = var.jwt_public_key
+    OSS_BUCKET   = alicloud_oss_bucket.secrets.bucket
+    OSS_ENDPOINT = local.oss_endpoint
+    JWT_SECRET   = var.jwt_secret
   }
 
   tags = {

@@ -210,7 +210,7 @@ Vault 内部：
 | 放 Vault | 理由 |
 |----------|------|
 | OSS 访问凭证（阿里云 secret engine 动态生成 STS） | 替代静态 AK/SK，短期凭证自动轮换，泄露面最小化 |
-| JWT 签名/验签密钥（本系统自签 token 时） | 集中托管 + 轮换 + 审计 |
+| JWT 签名/验签密钥（HS256，与 qtcloud-auth 共享 JWT_SECRET） | 集中托管 + 轮换 + 审计 |
 | 数据库口令（团队版引入 PG 时） | 动态凭据，应用不持有静态密码 |
 | transit 引擎（审计日志、元数据加密） | 服务端用 Vault 加解密而不接触密钥明文 |
 | 部署凭据（FC 环境变量注入改 Vault Agent） | 消除 tfstate 明文落盘（README 待办） |

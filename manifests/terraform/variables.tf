@@ -45,8 +45,8 @@ variable "fc_timeout" {
   default     = 60
 }
 
-variable "jwt_public_key" {
-  description = "外部子系统 JWT 验签公钥（base64 编码 PEM，RS256/ES256）。通过 TF_VAR_jwt_public_key 或 terraform.tfvars 注入，不入库"
+variable "jwt_secret" {
+  description = "JWT HS256 签名密钥（与 qtcloud-auth 共享的 org secret JWT_SECRET）。通过 TF_VAR_jwt_secret 注入，不入库"
   type        = string
   sensitive   = true
 }

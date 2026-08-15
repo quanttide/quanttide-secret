@@ -3,4 +3,4 @@ region               = "cn-hangzhou"
 environment          = "prod"
 # oss_bucket_name    = "qtcloud-secret-data"   # 如非默认可覆盖；OSS 全局唯一
 image                = "<ACR实例公网地址，控制台可见，勿入库>/quanttide/qtcloud-secret:latest"
-jwt_public_key       = "<外部子系统 JWT 验签公钥 base64 PEM，勿入库>"
+jwt_secret           = "<与 qtcloud-auth 共享的 JWT HS256 密钥，勿入库>"

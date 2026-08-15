@@ -26,7 +26,7 @@
 - **双重加密**：客户端 AES-256-GCM（明文不离开客户端）+ OSS SSE-OSS（第二层兜底）
 - **服务端加密成本**：SSE-OSS 由 OSS 托管密钥、自动轮换、**免费**。不用 SSE-KMS 的原因：KMS 共享版（按密钥计费、免费额度内免密钥费）已 EOFS/EOS 停服，当前新购 KMS 密钥只能购买专属密钥管理实例（软件实例 2,499 元/月起），当前阶段不值得；若将来等保/合规要求自管密钥，再评估 KMS 实例
 - **最小权限**：FC 角色仅持有本数据桶 `Get/Put/Delete/List` 权限；桶私有，客户端永不直接接触 OSS
-- **密钥**：`jwt_public_key`（外部子系统验签公钥，公开材料）与 `image` 通过 `TF_VAR_*` 或 terraform.tfvars 注入，**不入库**（tfvars.example 只给占位值）；当前 FC 环境变量携带公钥落入 tfstate，后续迁移 Vault 注入（服务端密钥底座，见 docs/dev-guide/security.md 第 9 章；当前仅预留架构位）
+- **密钥**：`jwt_secret`（与 qtcloud-auth 共享的 JWT HS256 签名密钥，org secret `JWT_SECRET`）与 `image` 通过 `TF_VAR_*` 注入，**不入库**（tfvars.example 只给占位值）；当前 FC 环境变量携带密钥明文落入 tfstate（与 qtcloud-auth 相同的已知问题），后续迁移 Vault 注入（服务端密钥底座，见 docs/dev-guide/security.md 第 9 章；当前仅预留架构位）
 - **恢复**：版本控制保留历史版本，误删/误写可回滚；生命周期 `version-cleanup` 默认 30 天后清理旧版本
 
 ## 使用
