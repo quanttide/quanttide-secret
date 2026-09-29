@@ -12,6 +12,8 @@
 
 ### 变更
 
+
+- 实验室子模块改名：`examples/default` → `examples/quanttide-secret-lab`（仓 quanttide-laboratory-of-secret-management → quanttide-secret-lab）
 - 领域更名：密码管理 → 机密管理；范围扩大为密码、证件等所有需要同一套安全架构处理的对象（不同对象形态使用不同数据模型）
 
 ### 新增

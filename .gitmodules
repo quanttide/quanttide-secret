@@ -4,6 +4,6 @@
 [submodule "packages/quanttide-secret-toolkit"]
 	path = packages/quanttide-secret-toolkit
 	url = https://github.com/quanttide/quanttide-secret-toolkit.git
-[submodule "examples/default"]
-	path = examples/default
-	url = https://github.com/quanttide/quanttide-laboratory-of-secret-management.git
+[submodule "examples/quanttide-secret-lab"]
+	path = examples/quanttide-secret-lab
+	url = https://github.com/quanttide/quanttide-secret-lab.git

@@ -27,7 +27,7 @@
 |------|------|
 | `apps/qtcloud-secret` | QtCloud 机密管理应用 (git submodule) |
 | `packages/quanttide-secret-toolkit` | 机密管理工具集 (git submodule) |
-| `examples/default` | 机密管理实验室 (git submodule → quanttide-laboratory-of-secret-management) |
+| `examples/quanttide-secret-lab` | 机密管理实验室 (git submodule → quanttide-secret-lab) |
 
 ## 许可
 
